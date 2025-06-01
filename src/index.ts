@@ -7,8 +7,8 @@ dotenv.config();
 
 const app: Express = express();
 app.use(express.json());
-const INTERNAL_PORT = process.env.AUTH_INTERNAL_SERVICE_PORT;
-const EXPOSED_PORT = process.env.AUTH_SERVICE_PORT;
+const INTERNAL_PORT = process.env.INTERNAL_SERVICE_PORT;
+const EXPOSED_PORT = process.env.SERVICE_PORT;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 if (!JWT_SECRET) {
