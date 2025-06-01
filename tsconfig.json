@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+    /* Language and Environment */
+    "target": "es2017" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    /* Modules */
+    "module": "ESNext" /* Specify what module code is generated. */,
+    "baseUrl": "./" /* Base directory to resolve non-absolute module names. */,
+    "paths": {
+      "@/*": ["src/*"],
+      "@/prisma": ["src/prisma/generated"]
+    } /* Specify a set of entries that re-map imports to additional lookup locations. */,
+    //    "typeRoots": [
+    //      "./src/types"
+    //    ],
+    //    "moduleResolution": "NodeNext",
+    "moduleResolution": "node",
+    /* Emit */
+    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "allowImportingTsExtensions": true /* Allow importing .ts files without specifying an extension. */,
+
+    /* Type Checking */
+    "strict": true /* Enable all strict type-checking options. */,
+    "useUnknownInCatchVariables": false,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": false,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
+}

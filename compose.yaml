@@ -1,0 +1,55 @@
+services:
+  # see: https://github.com/nodejs/docker-node/blob/main/README.md#how-to-use-this-image
+  server:
+    image: node:23.8.0-alpine
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@database:5432/${POSTGRES_DB:-mydb}
+    volumes:
+      - ./:/home/node/app
+    user: node
+    working_dir: /home/node/app
+    # TODO: See if seeding is made the correct way
+    command: >
+      sh -c "
+        npm install && 
+        npx prisma generate &&
+        npx prisma migrate deploy &&
+        npx prisma db seed &&
+        exec npm run dev
+      "
+    ports:
+      - "${SERVICE_PORT:-3000}:${INTERNAL_SERVICE_PORT:-3000}"
+    networks:
+      - prisma-network
+
+  database:
+    image: postgres:17.4-alpine3.21
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-mydb}
+    volumes:
+      - postgres-database:/var/lib/postgresql/data
+    networks:
+      - prisma-network
+
+  prisma-studio:
+    image: node:lts-alpine3.17
+    working_dir: /usr/src/app
+    stop_grace_period: 1s
+    volumes:
+      - ./:/usr/src/app
+    command: npx prisma studio --port 5555 --browser none
+    ports:
+      - "5555:5555"
+    env_file:
+      - .env
+    networks:
+      - prisma-network
+
+volumes:
+  postgres-database:
+
+networks:
+  prisma-network:
+    name: prisma-network

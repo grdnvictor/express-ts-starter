@@ -1,0 +1,43 @@
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "npx tsx watch src/index.ts",
+    "test": "echo \"Pas de tests encore #confiance\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Victor GRANDIN",
+  "license": "ISC",
+  "description": "",
+  "prisma": {
+    "schema": "./prisma/schema",
+    "seed": "npx tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "@prisma/extension-accelerate": "^1.3.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "tsconfig-paths": "^4.2.0",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.4",
+    "concurrently": "^9.1.2",
+    "globals": "^16.2.0",
+    "prisma": "^6.6.0",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3"
+  }
+}
