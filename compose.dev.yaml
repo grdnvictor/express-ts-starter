@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@database:5432/${POSTGRES_DB:-mydb}
+      - DATABASE_URL=${DATABASE_URL}
     volumes:
       # Hot reload : monte tout le code source
       - ./src:/app/src
@@ -53,7 +53,7 @@ services:
     ports:
       - "5555:5555"
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@database:5432/${POSTGRES_DB:-mydb}
+      - DATABASE_URL=${DATABASE_URL}
     depends_on:
       database:
         condition: service_healthy
