@@ -4,10 +4,14 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "start": "node dist/index.js",
-    "dev": "npx tsx watch src/index.ts",
-    "test": "echo \"Pas de tests encore #confiance\" && exit 1"
+    "dev": "tsx watch src/index.ts",
+    "dev:docker": "docker compose -f compose.dev.yaml up --build",
+    "dev:docker:down": "docker compose -f compose.dev.yaml down",
+    "dev:docker:logs": "docker compose -f compose.dev.yaml logs -f server",
+    "dev:docker:db": "docker compose -f compose.dev.yaml up database -d",
+    "dev:prisma:migrate": "docker compose -f compose.dev.yaml exec server npx prisma migrate dev",
+    "dev:prisma:studio": "docker compose -f compose.dev.yaml up prisma-studio",
+    "dev:prisma:reset": "docker compose -f compose.dev.yaml exec server npx prisma migrate reset"
   },
   "keywords": [],
   "author": "Victor GRANDIN",
