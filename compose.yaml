@@ -3,14 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: production
     environment:
       - NODE_ENV=production
       - DATABASE_URL=${DATABASE_URL}
-    volumes:
-      # Bind mount pour le développement uniquement
-      - ./src:/app/src:ro
-      - ./prisma:/app/prisma:ro
     ports:
       - "${SERVICE_PORT:-3333}:3000"
     depends_on:

@@ -1,28 +1,19 @@
 {
   "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig to read more about this file */
-    /* Language and Environment */
-    "target": "es2017" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-    /* Modules */
-    "module": "ESNext" /* Specify what module code is generated. */,
-    "baseUrl": "./" /* Base directory to resolve non-absolute module names. */,
+    "target": "ES2020",
+    "module": "CommonJS",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
       "@/prisma": ["src/prisma/generated"]
-    } /* Specify a set of entries that re-map imports to additional lookup locations. */,
-    //    "typeRoots": [
-    //      "./src/types"
-    //    ],
-    //    "moduleResolution": "NodeNext",
+    },
     "moduleResolution": "node",
-    /* Emit */
-    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
-    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
-    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-    "allowImportingTsExtensions": true /* Allow importing .ts files without specifying an extension. */,
-
-    /* Type Checking */
-    "strict": true /* Enable all strict type-checking options. */,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "useUnknownInCatchVariables": false,
     "strictFunctionTypes": true,
     "strictBindCallApply": false,
@@ -30,6 +21,7 @@
     "noImplicitAny": true,
     "noImplicitThis": true
   },
+  "include": ["src/**/*"],
   "ts-node": {
     "require": ["tsconfig-paths/register"]
   }

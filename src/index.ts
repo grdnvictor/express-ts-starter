@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 
-import RouteLoader from "./RouteLoader.ts";
+import RouteLoader from "./RouteLoader";
 
 dotenv.config();
 
@@ -24,6 +24,6 @@ app.use((_request, response) => {
 
 app.listen(INTERNAL_PORT, () => {
   console.log(
-    `[MY-SERVICE]: MY-SERVICE is running at http://localhost:${EXPOSED_PORT}`,
+      `[MY-SERVICE]: MY-SERVICE is running at http://localhost:${EXPOSED_PORT}`,
   );
 });

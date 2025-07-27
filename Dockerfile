@@ -1,36 +1,28 @@
-# Stage 1: Dependencies
-FROM node:23.8.0-alpine AS deps
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+FROM node:23.8.0-alpine
 
-# Stage 2: Build
-FROM node:23.8.0-alpine AS build
 WORKDIR /app
+
+# Copier package.json
 COPY package*.json ./
+
+# Installer toutes les dépendances (y compris dev pour le build)
 RUN npm ci
+
+# Copier tout le code
 COPY . .
-RUN npm run build
 
-# Stage 3: Production
-FROM node:23.8.0-alpine AS production
-WORKDIR /app
+# Générer Prisma
+RUN npx prisma generate
 
-# Créer un utilisateur non-root
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
+# Build avec debug
+RUN echo "=== BUILDING ===" && npm run build && echo "=== BUILD DONE ===" && ls -la dist/
 
-# Copier les dépendances de production
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/package*.json ./
-
-# Changer vers l'utilisateur non-root
-USER nodejs
-
+# Exposer le port
 EXPOSE 3000
 
+# Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
 
+# Commande
 CMD ["node", "dist/index.js"]
