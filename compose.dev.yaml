@@ -6,14 +6,17 @@ services:
     environment:
       - NODE_ENV=development
       - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
     volumes:
       # Hot reload : monte tout le code source
-      - ./src:/app/src
-      - ./prisma:/app/prisma
-      - ./package.json:/app/package.json
-      - ./tsconfig.json:/app/tsconfig.json
+      - ./src:/app/src:cached
+      - ./prisma:/app/prisma:cached
+      - ./package.json:/app/package.json:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
       # Évite de monter node_modules (conflits entre host/container)
       - /app/node_modules
+      # Cache pour tsx
+      - tsx-cache:/home/node/.cache
     ports:
       - "${SERVICE_PORT:-3333}:3000"
     depends_on:
@@ -29,6 +32,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-mydb}
+      # Optimisations PostgreSQL pour le dev
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
     volumes:
       - postgres-dev-data:/var/lib/postgresql/data
     ports:
@@ -43,13 +48,22 @@ services:
     restart: unless-stopped
     networks:
       - dev-network
+    # Config PostgreSQL pour le dev
+    command: >
+      postgres
+      -c shared_buffers=256MB
+      -c work_mem=4MB
+      -c maintenance_work_mem=64MB
+      -c effective_cache_size=1GB
+      -c max_connections=100
 
   prisma-studio:
     image: node:23.8.0-alpine
     working_dir: /app
     volumes:
       - ./:/app:ro
-    command: ["npx", "prisma", "studio", "--port", "5555", "--browser", "none"]
+      - /app/node_modules
+    command: ["sh", "-c", "exec npm ci && npx prisma studio --port 5555 --browser none"]
     ports:
       - "5555:5555"
     environment:
@@ -59,9 +73,11 @@ services:
         condition: service_healthy
     networks:
       - dev-network
+    restart: unless-stopped
 
 volumes:
   postgres-dev-data:
+  tsx-cache:
 
 networks:
   dev-network:

@@ -22,4 +22,4 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/test || exit 1
 
 # Utiliser tsx watch pour le hot reload
-CMD ["npx", "tsx", "watch", "src/index.ts"]
+CMD ["exec", "npx", "tsx", "watch", "src/index.ts"]
