@@ -1,12 +1,15 @@
 import { Router } from "express";
+import { validateContract } from "@/middlewares";
+import { ContractsExample } from "@/contracts/contract_example/contracts";
+import {ExampleController} from "@/controllers/ExampleController";
 
 export default function (router: Router) {
 
-  router.get("/test", (request, response) => {
-    response.json({
-      message: "Hello, world!"
-    })
-  });
+  router.get(
+      "/test",
+      validateContract(ContractsExample),
+      ExampleController.mymethod
+  );
 
   // => Prefer this approach for defining routes
   //    Easier to read and to stack middlewares

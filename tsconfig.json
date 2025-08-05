@@ -23,12 +23,12 @@
     "removeComments": true,
     "declaration": false,
     "declarationMap": false,
-    "sourceMap": false
+    "sourceMap": false,
   },
   "include": ["src/**/*"],
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
   "ts-node": {
     "require": ["tsconfig-paths/register"],
     "esm": true
-  }
+  },
 }

@@ -1,7 +1,2 @@
-# @name = base
-POST {{BASE_URL}}
-Content-Type: application/json
-
-{
-  "my_field": "my_value"
-}
+# @name = Test route
+GET {{BASE_URL}}/test?name=myname&description=mydescription&phone=1234567890

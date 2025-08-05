@@ -1,6 +1,7 @@
-import { AnyZodObject, z, ZodError, ZodType } from "zod";
+import { AnyZodObject, z, ZodError } from "zod";
 import { NextFunction, Request, Response } from "express";
-export type ValidatedRequest<T extends ZodType> = Request & {
+
+export type ValidatedRequest<T extends AnyZodObject> = Request & {
   validated: z.infer<T>;
 };
 
