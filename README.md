@@ -258,6 +258,7 @@ Configuration dans `api-playground/config/http-client.env.json`.
 ### Ajout d'une nouvelle route
 
 1. Créer le contrat Zod dans `src/contracts/`
+   - :warning: Pour vous simplifier la création, utiliser le contract builder fournit dans `src/contracts/ContractBuilder.ts`.
 2. Créer le contrôleur dans `src/controllers/`
 3. Créer le fichier de route dans `src/routes/`
 4. Tester avec les fichiers HTTP

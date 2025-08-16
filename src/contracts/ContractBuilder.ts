@@ -7,6 +7,11 @@ type EmptyZodObject = z.ZodObject<{}>;
 // Empty schema for default values
 const EMPTY_SCHEMA = z.object({}) as EmptyZodObject;
 
+class ContractBuilder<
+    TBody extends AnyZodObject = EmptyZodObject,
+    TQuery extends AnyZodObject = EmptyZodObject,
+    TParams extends AnyZodObject = EmptyZodObject
+> {
 /**
  * Immutable builder for creating HTTP validation contracts
  *
@@ -33,11 +38,7 @@ const EMPTY_SCHEMA = z.object({}) as EmptyZodObject;
  * );
  * ```
  */
-export class ContractBuilder<
-    TBody extends AnyZodObject = EmptyZodObject,
-    TQuery extends AnyZodObject = EmptyZodObject,
-    TParams extends AnyZodObject = EmptyZodObject
-> {
+
     private readonly schemas: Readonly<{
         body: TBody;
         query: TQuery;
@@ -93,7 +94,7 @@ export class ContractBuilder<
      * ```
      */
     body<T extends AnyZodObject>(schema: T): ContractBuilder<T, TQuery, TParams> {
-        return new ContractBuilder(schema, this.schemas.query, this.schemas.params);
+        return new ContractBuilder(schema as T, this.schemas.query, this.schemas.params);
     }
 
     /**
@@ -281,7 +282,7 @@ export class ContractBuilder<
  *   .build();
  * ```
  *
- * @example Integration with Express middleware
+ * @example Integration with Express middleware (where validate is a zod validation middleware)
  * ```typescript
  * import { validate } from './middleware/validate';
  *
