@@ -1,270 +1,251 @@
 # Express Service
 
-Service Express.js avec TypeScript, Prisma et Docker pour le développement et la production.
+![Node.js](https://img.shields.io/badge/Node.js-23.8.0-green?logo=node.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-blue?logo=typescript)
+![Express](https://img.shields.io/badge/Express-4.21.2-lightgrey?logo=express)
+![Prisma](https://img.shields.io/badge/Prisma-6.12.0-2D3748?logo=prisma)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17.4-336791?logo=postgresql)
+![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
+![License](https://img.shields.io/badge/License-Apache%202.0-green)
 
-## 🚀 Démarrage rapide
+A production-ready Express.js boilerplate with TypeScript, Prisma ORM, Docker configuration, and automatic route loading. Built for rapid backend development with type-safe validation and modern development practices.
 
-### Prérequis
-
-- Node.js 23.8.0+
-- Docker & Docker Compose
-- Git
-
-### Installation
+## 🚀 Quick Start
 
 ```bash
-# Cloner le projet
+# Clone and setup
 git clone <repository-url>
 cd express-service
-
-# Copier le fichier d'environnement
 cp .env.example .env
 
-# Compléter les variables d'environnement
-# Notamment JWT_SECRET qui est obligatoire
-```
+# Configure environment (REQUIRED: Set JWT_SECRET)
+# Edit .env file with your configuration
 
-## 🛠️ Développement
-
-### Démarrage en mode développement
-
-```bash
-# Démarrer tous les services de développement
-npm run dev:docker
-
-# Ou démarrer seulement la base de données
-npm run dev:docker:db
-
-# Développement local (nécessite une DB externe)
+# Start development environment
 npm run dev
+
+# Your API is now running at http://localhost:3333
 ```
 
-### Gestion de la base de données
-
-```bash
-# Créer et appliquer une migration
-npm run dev:prisma:migrate
-
-# Générer le client Prisma
-npm run dev:prisma:generate
-
-# Ouvrir Prisma Studio
-npm run dev:prisma:studio
-
-# Seeder la base de données
-npm run dev:prisma:seed
-
-# Reset complet de la DB
-npm run dev:prisma:reset
-```
-
-### Utilitaires de développement
-
-```bash
-# Voir les logs du serveur
-npm run dev:docker:logs
-
-# Arrêter les services
-npm run dev:docker:down
-
-# Nettoyer complètement (supprime les volumes)
-npm run dev:docker:clean
-```
-
-## 🏗️ Production
-
-### Construction et déploiement
-
-```bash
-# Construire le projet
-npm run build
-
-# Démarrer en production
-npm run prod
-
-# Ou démarrer directement l'application compilée
-npm start
-```
-
-### Gestion en production
-
-```bash
-# Voir les logs
-npm run prod:logs
-
-# Redémarrer le serveur
-npm run prod:restart
-
-# Arrêter les services
-npm run prod:down
-
-# Nettoyer complètement
-npm run prod:clean
-```
-
-### Migrations en production
-
-```bash
-# Appliquer les migrations
-npm run prisma:migrate
-
-# Générer le client Prisma
-npm run prisma:generate
-
-# Seeder la base de données
-npm run prisma:seed
-
-# Ouvrir Prisma Studio (optionnel)
-npm run prisma:studio
-```
-
-## 📁 Structure du projet
+## 📁 Project Structure
 
 ```
 express-service/
 ├── src/
-│   ├── contracts/          # Contrats Zod pour validation
-│   ├── controllers/        # Contrôleurs métier
-│   ├── middlewares/        # Middlewares Express
-│   ├── routes/            # Définition des routes
-│   ├── services/          # Services (Prisma, etc.)
-│   ├── RouteLoader.ts     # Chargeur automatique de routes
-│   └── index.ts           # Point d'entrée
+│   ├── contracts/          # Zod validation schemas (fluent builder pattern)
+│   ├── controllers/        # Business logic handlers
+│   ├── middlewares/        # Express middlewares (auth, validation)
+│   ├── routes/            # Route definitions (auto-loaded)
+│   ├── services/          # External services (Prisma, etc.)
+│   ├── RouteLoader.ts     # Automatic route discovery
+│   └── index.ts           # Application entry point
 ├── prisma/
-│   ├── schema/            # Schémas Prisma
-│   └── seed.ts           # Script de seeding
-├── api-playground/        # Tests API avec HTTP files
-├── .env.example          # Template variables d'environnement
-├── compose.dev.yaml      # Configuration Docker dev
-├── compose.yaml          # Configuration Docker prod
-├── Dockerfile.dev        # Image Docker développement
-└── Dockerfile           # Image Docker production
+│   ├── schema/            # Prisma schema files
+│   └── seed.ts           # Database seeding
+├── api-playground/        # HTTP test files
+├── .env.example          # Environment template
+├── compose.dev.yaml      # Development Docker setup
+└── compose.yaml          # Production Docker setup
 ```
 
-## 🔧 Configuration
+## 🛠️ Commands Reference
 
-### Variables d'environnement
+### Development
+- `npm run dev` - Start full development stack (app + database + Prisma Studio)
+- `npm run dev:logs` - View server logs
+- `npm run dev:restart` - Restart development server
+- `npm run dev:clean` - Stop and remove all containers/volumes
 
-Copiez `.env.example` vers `.env` et configurez :
+### Production
+- `npm run prod` - Deploy production environment
+- `npm run prod:logs` - View production logs
+- `npm run prod:restart` - Restart production server
 
-```bash
-# Ports
-SERVICE_PORT=3333                    # Port exposé
-INTERNAL_SERVICE_PORT=3000          # Port interne du conteneur
+### Database (Development)
+- `npm run prisma:dev:migrate` - Create and apply migrations
+- `npm run prisma:dev:studio` - Open Prisma Studio (database GUI)
+- `npm run prisma:dev:generate` - Generate Prisma client
+- `npm run prisma:dev:seed` - Seed database with initial data
 
-# Base de données
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=your_password
-POSTGRES_DB=myapp
+### Local Development (without Docker)
+- `npm run local:dev` - Start with hot reload
+- `npm run build` - Build for production
+- `npm start` - Run built application
 
-# Sécurité
-JWT_SECRET=your-super-secret-key    # ⚠️ OBLIGATOIRE
+## 🔧 Creating Your First Feature
 
-# Docker
-COMPOSE_PROJECT_NAME=myapp          # Nom du projet Docker
-```
+### 1. Create a Contract (Validation Schema)
 
-### Différences dev/prod
-
-**Développement :**
-- Hot reload avec `tsx watch`
-- Volumes montés pour le code source
-- Base de données exposée sur port 5432
-- Prisma Studio disponible sur port 5555
-
-**Production :**
-- Image optimisée multi-stage
-- Utilisateur non-root
-- Healthchecks configurés
-- Prisma Studio en mode `--profile tools`
-
-## 🗄️ Base de données
-
-### Prisma
-
-Le projet utilise Prisma avec PostgreSQL. Les schémas sont organisés dans `prisma/schema/`.
-
-```bash
-# Commandes Prisma essentielles
-npx prisma generate              # Générer le client
-npx prisma migrate dev          # Créer et appliquer migration (dev)
-npx prisma migrate deploy       # Appliquer migrations (prod)
-npx prisma studio              # Interface graphique
-npx prisma db seed             # Seeder les données
-```
-
-⚠️ **Important** : Exécutez les commandes Prisma via Docker pour que la résolution DNS fonctionne :
-
-```bash
-docker compose -f compose.dev.yaml exec server npx prisma migrate dev --name ma_migration
-```
-
-## 🛣️ Routes
-
-Les routes sont chargées automatiquement depuis `src/routes/` grâce au `RouteLoader`.
-
-### Exemple de route
+Use the fluent builder pattern to create type-safe validation:
 
 ```typescript
+// src/contracts/user/schemas/UserSchemas.ts
+import { z } from "zod";
+
+export const CreateUserSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(2),
+  age: z.number().min(18).optional()
+});
+
+export const UserParamsSchema = z.object({
+  id: z.string().uuid()
+});
+```
+
+```typescript
+// src/contracts/user/contracts/UserContracts.ts
+import { createContract } from "@/contracts";
+import { CreateUserSchema, UserParamsSchema } from "../schemas";
+
+export const CreateUserContract = createContract()
+  .body(CreateUserSchema)
+  .build();
+
+export const GetUserContract = createContract()
+  .params(UserParamsSchema)
+  .query(z.object({
+    includeProfile: z.coerce.boolean().default(false)
+  }))
+  .build();
+```
+
+### 2. Create a Controller
+
+```typescript
+// src/controllers/UserController.ts
+import { Request, Response } from "express";
+import { ValidatedRequest } from "@/middlewares";
+import { CreateUserContract, GetUserContract } from "@/contracts";
+
+export class UserController {
+  static async createUser(request: Request, response: Response) {
+    const validatedRequest = request as ValidatedRequest<typeof CreateUserContract>;
+    const { email, name, age } = validatedRequest.validated.body;
+    
+    // Your business logic here
+    response.status(201).json({ 
+      message: "User created", 
+      user: { email, name, age } 
+    });
+  }
+
+  static async getUser(request: Request, response: Response) {
+    const validatedRequest = request as ValidatedRequest<typeof GetUserContract>;
+    const { id } = validatedRequest.validated.params;
+    const { includeProfile } = validatedRequest.validated.query;
+    
+    // Your business logic here
+    response.json({ id, includeProfile });
+  }
+}
+```
+
+### 3. Create Routes
+
+```typescript
+// src/routes/users.ts
 import { Router } from "express";
 import { validateContract, checkAuthentication } from "@/middlewares";
-import { MonContract } from "@/contracts";
-import { MonController } from "@/controllers";
+import { CreateUserContract, GetUserContract } from "@/contracts";
+import { UserController } from "@/controllers";
 
 export default function (router: Router) {
   router.post(
-    "/mon-endpoint",
-    checkAuthentication,
-    validateContract(MonContract),
-    MonController.action
+    "/users",
+    validateContract(CreateUserContract),
+    UserController.createUser
   );
-  
+
+  router.get(
+    "/users/:id",
+    checkAuthentication,
+    validateContract(GetUserContract), 
+    UserController.getUser
+  );
+
   return router;
 }
 ```
 
-## 🔒 Sécurité
+### 4. Export Your Contracts
 
-- JWT pour l'authentification (middleware à implémenter)
-- Validation des données avec Zod
-- Images Docker avec utilisateur non-root
-- Variables d'environnement pour les secrets
+```typescript
+// src/contracts/user/contracts/index.ts
+export * from "./UserContracts";
 
-## 📊 Monitoring
-
-### Healthchecks
-
-- **Dev** : `wget http://localhost:3000/test`
-- **Prod** : `curl http://localhost:3000/health`
-
-### Logs
-
-```bash
-# Développement
-npm run dev:docker:logs
-
-# Production
-npm run prod:logs
+// src/contracts/index.ts
+export * from "./ContractBuilder";
+export * from "./user/contracts";
 ```
 
-## 🧪 Tests API
+That's it! Your routes are automatically loaded and your endpoints are now available with full type safety.
 
-Utilisez les fichiers HTTP dans `api-playground/` avec votre IDE (VS Code REST Client, IntelliJ HTTP Client).
+## 🏗️ Contract Builder Features
 
-Configuration dans `api-playground/config/http-client.env.json`.
+The fluent builder pattern provides a clean, type-safe way to define validation:
 
-## 📝 Développement
+```typescript
+// Complex contract example
+const UpdatePostContract = createContract()
+  .params(z.object({
+    postId: z.string().uuid(),
+    userId: z.string().uuid()
+  }))
+  .body(z.object({
+    title: z.string().min(1).max(200),
+    content: z.string().min(1),
+    tags: z.array(z.string()).max(5).optional(),
+    published: z.boolean().default(false)
+  }).partial()) // Makes all fields optional for PATCH
+  .query(z.object({
+    notify: z.coerce.boolean().default(true),
+    reason: z.string().optional()
+  }))
+  .build();
+```
 
-### Ajout d'une nouvelle route
+**Benefits:**
+- **Type Safety**: Full TypeScript inference for request data
+- **Immutable**: Each method returns a new instance
+- **Fluent API**: Chain methods in any order
+- **Auto-completion**: IDE support for validation rules
 
-1. Créer le contrat Zod dans `src/contracts/`
-   - :warning: Pour vous simplifier la création, utiliser le contract builder fournit dans `src/contracts/ContractBuilder.ts`.
-2. Créer le contrôleur dans `src/controllers/`
-3. Créer le fichier de route dans `src/routes/`
-4. Tester avec les fichiers HTTP
+## 🐳 Docker Development
 
-### Ajout d'un modèle Prisma
+The project includes optimized Docker configurations:
 
-1. Modifier `prisma/schema/example.prisma`
-2. Créer la migration : `npm run dev:prisma:migrate`
-3. Générer le client : `npm run dev:prisma:generate`
+- **Development**: Hot reload, mounted volumes, exposed database
+- **Production**: Multi-stage build, non-root user, health checks
+- **Prisma Studio**: Available on port 5555 in development
+
+## 🔒 Environment Configuration
+
+Required environment variables:
+
+```bash
+# .env
+JWT_SECRET=your-super-secret-key  # REQUIRED
+SERVICE_PORT=3333
+POSTGRES_PASSWORD=your-password
+DATABASE_URL="postgresql://..."
+```
+
+## 📡 API Testing
+
+Use the included HTTP files in `api-playground/` with your IDE's REST client:
+
+```http
+### Test endpoint
+GET {{BASE_URL}}/test?name=John&description=Test&phone=1234567890
+```
+
+## 🚀 Deployment
+
+1. Configure production environment variables
+2. Run `npm run prod` for containerized deployment
+3. Use `npm run prisma:prod:migrate` for database migrations
+
+---
+
+**Ready to build? Start with `npm run dev` and create your first route!**
